@@ -1,14 +1,64 @@
-﻿
-
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace DesafioConversorDeMoeda
 {
     public class ValidadorDados
     {
-        public string MoedaOrigem { get; private set; }
-        public string MoedaDestino { get; private set; }
-        public string Valor { get; private set; }
+        private string _moedaOrigem;
+        public string MoedaOrigem
+        {
+            get
+            {
+                return _moedaOrigem;
+            }
+            set
+            {
+                while (!ValidaMoeda(value))
+                {
+                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor de moeda Origem:  ");
+                    Console.WriteLine();
+                    value = Console.ReadLine();
+                }
+                _moedaOrigem = value;
+            }
+        }
+
+        private string _moedaDestino;
+        public string MoedaDestino
+        {
+            get
+            {
+                return _moedaDestino;
+            }
+            set
+            {
+                while (!ValidaMoeda(value))
+                {
+                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor de moeda Destino:  ");
+                    Console.WriteLine();
+                    value = Console.ReadLine();
+                }
+                _moedaDestino = value;
+            }
+        }
+        private string _valor;
+        public string Valor
+        {
+            get
+            {
+                return _valor;
+            }
+            set
+            {
+                while (!ValidaValor(value) || ValorConvertido <= 0)
+                {
+                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor:  ");
+                    Console.WriteLine();
+                    value = Console.ReadLine();
+                }
+                _valor = value;
+            }
+        }
         public double ValorConvertido { get; private set; }
 
         public ValidadorDados(string moedaOrigem, string moedaDestino, string valor)
@@ -16,41 +66,23 @@ namespace DesafioConversorDeMoeda
             MoedaOrigem = moedaOrigem;
             MoedaDestino = moedaDestino;
             Valor = valor;
-            ChecaDados();
         }
 
-        private void ChecaDados()
-        {
-            if (!ValidaString(MoedaOrigem))
-            {
-                Console.WriteLine("Moeda de origem deve ter exatamente 3 caracteres.");
-            }
-            if (!ValidaString(MoedaDestino))
-            {
-                Console.WriteLine("Moeda de destino deve ter exatamente 3 caracteres.");
-            }
-            if (!ValidaValor(Valor) && ValorConvertido <= 0)
-            {
-                Console.WriteLine("Valor inválido!");
-            }
-
-        }
-
-        private bool ValidaString(string str)
+        private bool ValidaMoeda(string moeda)
         {
             string padrao = "^[a-zA-Z]{3}$";
 
-            return Regex.IsMatch(str, padrao);
+            return Regex.IsMatch(moeda, padrao);
         }
 
         private bool ValidaValor(string valor)
         {
-          if(double.TryParse(valor, out double resultado))
-            {
-                ValorConvertido = resultado;
-                return true;
-            }
-            return false;
+           if (double.TryParse(valor, out double resultado))
+           {
+             ValorConvertido = resultado;
+             return true;
+           }
+           return false;
         }
 
 
