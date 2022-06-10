@@ -15,8 +15,7 @@ namespace DesafioConversorDeMoeda
             {
                 while (!ValidaMoeda(value))
                 {
-                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor de moeda Origem:  ");
-                    Console.WriteLine();
+                    Console.Write($"Moeda origem:  ");
                     value = Console.ReadLine();
                 }
                 _moedaOrigem = value;
@@ -32,10 +31,9 @@ namespace DesafioConversorDeMoeda
             }
             set
             {
-                while (!ValidaMoeda(value))
+                while (!(ValidaMoeda(value) && ChecaSeMoedaIgual(value)))
                 {
-                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor de moeda Destino:  ");
-                    Console.WriteLine();
+                    Console.Write($"Moeda destino: ");
                     value = Console.ReadLine();
                 }
                 _moedaDestino = value;
@@ -50,10 +48,9 @@ namespace DesafioConversorDeMoeda
             }
             set
             {
-                while (!ValidaValor(value) || ValorConvertido <= 0)
+                while (!(ValidaValor(value) && ValorMaiorQueZero()))
                 {
-                    Console.Write($"o valor digitado {value} é inválido, digite um novo valor:  ");
-                    Console.WriteLine();
+                    Console.Write($"valor: ");
                     value = Console.ReadLine();
                 }
                 _valor = value;
@@ -68,11 +65,29 @@ namespace DesafioConversorDeMoeda
             Valor = valor;
         }
 
-        private bool ValidaMoeda(string moeda)
+        private bool ChecaSeMoedaIgual(string str)
+        {
+           if(str != MoedaOrigem)
+           {
+                return true;
+           }
+            Console.Clear();
+            Console.WriteLine($"Error: a moeda origem: {MoedaOrigem} e  moeda destino " +
+                              $"{str} são iguais.");
+            return false;
+        }
+
+        private static bool ValidaMoeda(string moeda)
         {
             string padrao = "^[a-zA-Z]{3}$";
 
-            return Regex.IsMatch(moeda, padrao);
+            if(Regex.IsMatch(moeda, padrao))
+            {
+                return true;
+            }
+            Console.Clear();
+            Console.WriteLine($"Error: a moeda {moeda} deve ter exatamente 3 caracteres alfabéticos.");
+            return false;
         }
 
         private bool ValidaValor(string valor)
@@ -82,9 +97,21 @@ namespace DesafioConversorDeMoeda
              ValorConvertido = resultado;
              return true;
            }
+            Console.Clear();
+            Console.WriteLine($"Erro de conversão: o valor {valor} não pode ser convertido.");
            return false;
         }
 
-
+        private bool ValorMaiorQueZero()
+        {
+            if(ValorConvertido > 0)
+            {
+                return true;
+            }
+            Console.Clear();
+            Console.WriteLine($"Erro de conversão: o valor {ValorConvertido} deve ser maior que zero.");
+            return false;
+           
+        }
     }
 }
