@@ -39,6 +39,7 @@ namespace DesafioConversorDeMoeda
                 _moedaDestino = value;
             }
         }
+
         private string _valor;
         public string Valor
         {
@@ -48,7 +49,7 @@ namespace DesafioConversorDeMoeda
             }
             set
             {
-                while (!(ValidaValor(value) && ValorMaiorQueZero()))
+                while (!ValidaValor(value))
                 {
                     Console.Write($"valor: ");
                     value = Console.ReadLine();
@@ -94,24 +95,18 @@ namespace DesafioConversorDeMoeda
         {
            if (double.TryParse(valor, out double resultado))
            {
-             ValorConvertido = resultado;
-             return true;
-           }
+             if(resultado > 0)
+             {
+                ValorConvertido = resultado;
+                return true;
+             }
+             Console.Clear();
+             Console.WriteLine($"Erro de conversão: o valor {resultado} deve ser maior que zero.");
+             return false;
+            }
             Console.Clear();
             Console.WriteLine($"Erro de conversão: o valor {valor} não pode ser convertido.");
            return false;
-        }
-
-        private bool ValorMaiorQueZero()
-        {
-            if(ValorConvertido > 0)
-            {
-                return true;
-            }
-            Console.Clear();
-            Console.WriteLine($"Erro de conversão: o valor {ValorConvertido} deve ser maior que zero.");
-            return false;
-           
         }
     }
 }
