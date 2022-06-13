@@ -64,6 +64,7 @@ namespace DesafioConversorDeMoeda
             MoedaOrigem = moedaOrigem;
             MoedaDestino = moedaDestino;
             Valor = valor;
+            ValorConvertido = GetValorConvertido();
         }
 
         private bool ChecaSeMoedaIgual(string str)
@@ -97,16 +98,21 @@ namespace DesafioConversorDeMoeda
            {
              if(resultado > 0)
              {
-                ValorConvertido = resultado;
                 return true;
              }
              Console.Clear();
              Console.WriteLine($"Erro de conversão: o valor {resultado} deve ser maior que zero.");
              return false;
-            }
+           }
             Console.Clear();
             Console.WriteLine($"Erro de conversão: o valor {valor} não pode ser convertido.");
            return false;
+        }
+
+        private double GetValorConvertido()
+        {
+            double resultado = double.Parse(Valor);
+            return resultado;
         }
     }
 }
